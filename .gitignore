@@ -1,0 +1,32 @@
+# Maven / Gradle build
+target/
+build/
+
+# Logs
+*.log
+
+# Compiled files
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / sensitive
+.env
+
+# Spring Boot config (optional)
+application.properties
+application.yml
+
+# Node (if frontend exists)
+node_modules/
+dist/
