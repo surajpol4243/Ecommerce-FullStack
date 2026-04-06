@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -57,5 +59,13 @@ public class JwtUtils {
 
     private boolean isTokenExpired(String token){
         return extractClaims(token, Claims::getExpiration).before(new Date());
+    }
+
+    public String getExpirationTime(String token){
+        Date expiration = extractClaims(token, Claims::getExpiration);
+
+        return expiration.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a"));
     }
 }
