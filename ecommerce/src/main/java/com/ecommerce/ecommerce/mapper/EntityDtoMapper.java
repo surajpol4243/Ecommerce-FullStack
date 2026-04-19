@@ -26,7 +26,7 @@ public class EntityDtoMapper {
         addressDto.setState(address.getState());
         addressDto.setState(address.getState());
         addressDto.setStreet(address.getStreet());
-        addressDto.setCountry(addressDto.getCountry());
+        addressDto.setCountry(address.getCountry());
         return addressDto;
     }
 

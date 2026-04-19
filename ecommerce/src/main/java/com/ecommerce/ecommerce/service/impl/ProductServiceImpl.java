@@ -124,4 +124,27 @@ public class ProductServiceImpl implements ProductService {
     public Response searchProduct(String searchValue) {
         return null;
     }
+
+    @Override
+    public Response createBulkProducts(List<ProductDto> products) {
+        List<Product> productList  = products.stream().map(p ->{
+            Category category = categoryRepo.findById(p.getCategoryDto().getId())
+                    .orElseThrow(()-> new NotFoundException("Category Id " + p.getCategoryDto().getId() + " Not found"));
+
+            Product product = new Product();
+            product.setName(p.getName());
+            product.setDescription(p.getDescription());
+            product.setPrice(p.getPrice());
+            product.setImageUrl(p.getImageUrl());
+            product.setCategory(category);
+
+            return product;
+        }).toList();
+
+        productRepo.saveAll(productList);
+        return  Response.builder()
+                .status(200)
+                .message("Bulk products created: " + productList.size())
+                .build();
+    }
 }

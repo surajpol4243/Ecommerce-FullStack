@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public Response registerUser(UserDto registrationRequest) {
         UserRole role = UserRole.USER;
 
-        if(userRepo.existesByEmail(registrationRequest.getEmail())){
+        if(userRepo.existsByEmail(registrationRequest.getEmail())){
             throw new RuntimeException(("Email already exists"));
         }
 
@@ -70,7 +70,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response loginUser(LoginRequest loginRequest) {
         User user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new NotFoundException("Invalid email or password"));
-
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException("Invalid email or password");
         }

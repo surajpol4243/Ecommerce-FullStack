@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.security;
 import com.ecommerce.ecommerce.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,11 @@ public class JwtUtils {
     @Value("${secreteJwtString}")
     private String secreteJwtString;
 
+    @PostConstruct
     private void init(){
+        if(secreteJwtString == null || secreteJwtString.length() < 32){
+            throw new IllegalArgumentException("JWT secret must be at least 32 characters");
+        }
         byte[] keyBytes = secreteJwtString.getBytes(StandardCharsets.UTF_8);
         this.key = new SecretKeySpec(keyBytes, "HmacSHA256");
     }
@@ -36,6 +41,7 @@ public class JwtUtils {
     }
 
     public String generateToken(String username){
+        System.out.println("+++++_____+++++We are here ++++++" + username);
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
